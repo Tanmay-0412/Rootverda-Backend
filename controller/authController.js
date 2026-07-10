@@ -55,3 +55,12 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+//Logout
+exports.logoutUser = async (req, res) => {
+  try {
+    res.json({ message: "Logout successful !" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
