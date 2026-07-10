@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(cors({
     origin: [
         "http://localhost:3000",
-        "https://rootverda.netlify.app/"
+        "https://rootverda.netlify.app"
     ],
     credentials : true
 }))
