@@ -34,25 +34,25 @@ exports.createOrder = async(req,res) =>{
     }
 } 
 
-exports.verifyPayment = async(req,res)=>{
-    const { productId, paymentId, signature} = req.body
-    const secret = process.env.RAZORPAY_SECRET
-    console.log(secret)
+exports.verifyPayment = async (req, res) => {
+    const { order_id, payment_id, signature } = req.body;
+    const secret = process.env.RAZORPAY_KEY_SECRET;
+    const hmac = crypto.createHmac("sha256", secret);
+    hmac.update(order_id + "|" + payment_id);
+    const generatedSignature = hmac.digest("hex");
 
-    // create hmac object 
-    const hmac = crypto.createHmac("sha256", secret)
-    hmac.update(paymentId + "|" + productId)
-    const generatedSignature = hmac.digest("hex")
+    console.log("Generated Signature:", generatedSignature);
+    console.log("Signature Match:", generatedSignature === signature);
 
-    if(generatedSignature === signature){
+    if (generatedSignature === signature) {
         return res.status(200).json({
-            success : true,
-            message : "Payment verified successfully"
-        })
-    }else{
+            success: true,
+            message: "Payment verified successfully"
+        });
+    } else {
         return res.status(400).json({
-            success : false,
-            message : "Payment verification failed"
-        })
+            success: false,
+            message: "Payment verification failed"
+        });
     }
-}
+};
